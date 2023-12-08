@@ -10,6 +10,7 @@ const sounds = [
   "/sounds/maroon.mp3",
   "/sounds/darkgoldenrod.mp3",
   "/sounds/darkblue.mp3",
+  "/sounds/reset.mp3",
 ];
 
 const Home = () => {
@@ -77,6 +78,8 @@ const Home = () => {
         setPlayingId(playingId + 1);
       }
     } else {
+      const audio = new Audio(sounds[4]);
+      audio.play();
       resetGame();
     }
   };
