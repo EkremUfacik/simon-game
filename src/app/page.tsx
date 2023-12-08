@@ -1,23 +1,29 @@
 "use client";
 
 import Pads from "@/components/Pads";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const colors = ["green", "maroon", "darkgoldenrod", "darkblue"];
+
+const sounds = [
+  "/sounds/green.mp3",
+  "/sounds/maroon.mp3",
+  "/sounds/darkgoldenrod.mp3",
+  "/sounds/darkblue.mp3",
+];
 
 const Home = () => {
   const [sequence, setSequence] = useState<number[]>([]);
   const [clickable, setClickable] = useState(false);
   const [gameStart, setGameStart] = useState(false);
   const [playingId, setPlayingId] = useState(0);
-  const [refId, setRefId] = useState({ id: -1 });
+  const containRef = useRef<HTMLDivElement | null>(null);
 
   const resetGame = () => {
     setSequence([]);
     setClickable(false);
     setGameStart(false);
     setPlayingId(0);
-    setRefId({ id: -1 });
   };
 
   const addItemSequence = () => {
@@ -37,27 +43,34 @@ const Home = () => {
     if (sequence.length > 0) {
       const showSequence = (id = 0) => {
         setTimeout(() => {
-          setRefId({ id: sequence[id] });
+          containRef.current?.children[sequence[id]].classList.add(
+            "brightness-200"
+          );
           setTimeout(() => {
+            containRef.current?.children[sequence[id]].classList.remove(
+              "brightness-200"
+            );
             if (id < sequence.length - 1) {
               showSequence(id + 1);
             } else {
               setClickable(true);
             }
-          }, 250);
-        }, 250);
+          }, 500);
+        }, 500);
       };
       showSequence();
     }
   }, [sequence.length]);
 
   const handleColorClick = (id: number) => {
+    const audio = new Audio(sounds[id]);
+    audio.play();
     if (sequence[playingId] === id) {
       if (playingId === sequence.length - 1) {
         setTimeout(() => {
           addItemSequence();
           setPlayingId(0);
-        }, 250);
+        }, 500);
       } else {
         setPlayingId(playingId + 1);
       }
@@ -69,14 +82,16 @@ const Home = () => {
   return (
     <div className="h-full flex flex-col gap-8 justify-center items-center">
       <h1 className="text-white text-4xl font-bold">Simon Game</h1>
-      <div className="relative grid grid-cols-2 w-fit mx-auto pads gap-2.5">
+      <div
+        ref={containRef}
+        className="relative grid grid-cols-2 w-fit mx-auto pads gap-2.5"
+      >
         {colors.map((color, index) => (
           <Pads
             key={index}
             index={index}
             color={color}
             clickable={clickable}
-            refId={refId}
             onClick={handleColorClick}
           />
         ))}
