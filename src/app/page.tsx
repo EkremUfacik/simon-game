@@ -43,6 +43,8 @@ const Home = () => {
     if (sequence.length > 0) {
       const showSequence = (id = 0) => {
         setTimeout(() => {
+          const audio = new Audio(sounds[sequence[id]]);
+          audio.play();
           containRef.current?.children[sequence[id]].classList.add(
             "brightness-200"
           );
@@ -55,8 +57,8 @@ const Home = () => {
             } else {
               setClickable(true);
             }
-          }, 500);
-        }, 500);
+          }, 300);
+        }, 300);
       };
       showSequence();
     }
@@ -70,7 +72,7 @@ const Home = () => {
         setTimeout(() => {
           addItemSequence();
           setPlayingId(0);
-        }, 500);
+        }, 300);
       } else {
         setPlayingId(playingId + 1);
       }
@@ -80,8 +82,10 @@ const Home = () => {
   };
 
   return (
-    <div className="h-full flex flex-col gap-8 justify-center items-center">
-      <h1 className="text-white text-4xl font-bold">Simon Game</h1>
+    <div className="h-full flex flex-col gap-24 justify-center items-center">
+      <h1 className="text-cyan-400 shadow-xl p-4 rounded-lg shadow-cyan-600 text-5xl font-bold">
+        Simon Game
+      </h1>
       <div
         ref={containRef}
         className="relative grid grid-cols-2 w-fit mx-auto pads gap-2.5"
@@ -96,7 +100,7 @@ const Home = () => {
           />
         ))}
         <button
-          className={`absolute translate-x-1/2 -translate-y-1/2 top-1/2 right-1/2 text-white text-lg font-bold bg-black w-24 h-24 rounded-full shadow-lg shadow-black ${
+          className={`absolute translate-x-1/2 -translate-y-1/2 top-1/2 right-1/2 text-purple-400 text-xl bg-black w-24 h-24 rounded-full shadow-lg shadow-black ${
             !gameStart && "hover:scale-105"
           } transition-all duration-[200ms] ease-in-out `}
           onClick={handleStart}
