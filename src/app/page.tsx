@@ -86,7 +86,7 @@ const Home = () => {
 
   return (
     <div className="h-full flex flex-col gap-24 justify-center items-center">
-      <h1 className="text-cyan-400 shadow-xl p-4 rounded-lg shadow-cyan-600 text-5xl font-bold">
+      <h1 className="text-cyan-400 shadow-xl p-4 rounded-lg shadow-cyan-600 text-3xl sm:text-5xl font-bold">
         Simon Game
       </h1>
       <div
@@ -103,7 +103,7 @@ const Home = () => {
           />
         ))}
         <button
-          className={`absolute translate-x-1/2 -translate-y-1/2 top-1/2 right-1/2 text-purple-400 text-xl bg-black w-24 h-24 rounded-full shadow-lg shadow-black ${
+          className={`absolute translate-x-1/2 -translate-y-1/2 top-1/2 right-1/2 text-purple-400 text-lg sm:text-xl bg-black w-20 sm:w-24 h-20 sm:h-24 rounded-full shadow-lg shadow-black ${
             !gameStart && "hover:scale-105"
           } transition-all duration-[200ms] ease-in-out `}
           onClick={handleStart}
