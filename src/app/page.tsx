@@ -17,14 +17,14 @@ const Home = () => {
   const [sequence, setSequence] = useState<number[]>([]);
   const [clickable, setClickable] = useState(false);
   const [gameStart, setGameStart] = useState(false);
-  const [playingId, setPlayingId] = useState(0);
   const containRef = useRef<HTMLDivElement | null>(null);
+  let playingId = 0;
 
   const resetGame = () => {
     setSequence([]);
     setClickable(false);
     setGameStart(false);
-    setPlayingId(0);
+    playingId = 0;
   };
 
   const addItemSequence = () => {
@@ -41,26 +41,28 @@ const Home = () => {
 
   useEffect(() => {
     setClickable(false);
-    if (sequence.length > 0) {
-      const showSequence = (id = 0) => {
+
+    const showSequence = (id = 0) => {
+      setTimeout(() => {
+        const audio = new Audio(sounds[sequence[id]]);
+        audio.play();
+        containRef.current?.children[sequence[id]].classList.add(
+          "brightness-200"
+        );
         setTimeout(() => {
-          const audio = new Audio(sounds[sequence[id]]);
-          audio.play();
-          containRef.current?.children[sequence[id]].classList.add(
+          containRef.current?.children[sequence[id]].classList.remove(
             "brightness-200"
           );
-          setTimeout(() => {
-            containRef.current?.children[sequence[id]].classList.remove(
-              "brightness-200"
-            );
-            if (id < sequence.length - 1) {
-              showSequence(id + 1);
-            } else {
-              setClickable(true);
-            }
-          }, 300);
+          if (id < sequence.length - 1) {
+            showSequence(id + 1);
+          } else {
+            setClickable(true);
+          }
         }, 300);
-      };
+      }, 300);
+    };
+
+    if (sequence.length > 0) {
       showSequence();
     }
   }, [sequence.length]);
@@ -72,10 +74,10 @@ const Home = () => {
       if (playingId === sequence.length - 1) {
         setTimeout(() => {
           addItemSequence();
-          setPlayingId(0);
+          playingId = 0;
         }, 300);
       } else {
-        setPlayingId(playingId + 1);
+        playingId++;
       }
     } else {
       const audio = new Audio(sounds[4]);
