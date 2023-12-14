@@ -65,7 +65,7 @@ const Home = () => {
     if (sequence.length > 0) {
       showSequence();
     }
-  }, [sequence.length]);
+  }, [sequence]);
 
   const handleColorClick = (id: number) => {
     const audio = new Audio(sounds[id]);
